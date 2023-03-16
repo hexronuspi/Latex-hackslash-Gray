@@ -1,0 +1,160 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{minted}
+\usepackage[rightcaption]{sidecap}
+
+\usepackage{wrapfig}
+
+\usepackage{hyperref}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\graphicspath{{Images/}}
+\begin{document}
+*This document is written in \LaTeX, by Aditya Raj (2204126/ECE-B), for raw \LaTeX code click \href{}{\textcolor{blue}{here}}.
+\begin{center}
+\textbf{\Large Team Gray Interface (ML Team) Induction Tasks}
+\end{center}
+\section{Problem Statement}
+
+You will be working on a USA housing price dataset. The features on it will be:
+
+\begin{itemize}
+\item Avg. area income - Average income of the family living in that area.
+\item Avg. area house age - Average age of the houses in a particular locality.
+\item Avg. area number of rooms - Average number of rooms in the houses in that area.
+\item Avg. area number of bedrooms - Average number of bedrooms.
+\item Area Population.
+\item Price (Prediction target).
+\item Address - address of that locality.
+\end{itemize}
+To-Do:
+\begin{itemize}
+\item Prepare a detailed python notebook using Linear Regression for predicting the price of houses in any locality.
+\item Import all the required libraries.
+\item Load and pre-process the dataset using the pandas library.
+\item Print the column data types.
+\item Visualize the dataset (plot the graphs whenever needed).
+\item Train the model on the dataset and print error and RMSE (Root Mean Squared Error).
+\end{itemize}
+\vspace{12\baselineskip}
+\section{Solution}
+We will use a dataset of US house price data for this research. The dataset includes a variety of characteristics, including the average area income, average area home age, average area number of rooms, average area number of beds, average area population, average area price (prediction goal), and average area address. Our objective is to create a linear regression model that can forecast property prices wherever.
+
+\vspace{1\baselineskip}
+The following actions will be taken in order to accomplish this goal:
+
+\begin{enumerate}
+\item Import all the required libraries.
+\item Load and pre-process the dataset using the pandas library.
+\item Print the column data types.
+\item Visualize the dataset using graphs whenever needed.
+\item Train the model on the dataset using linear regression.
+\item Evaluate the model by printing the error and RMSE (Root Mean Squared Error).
+\end{enumerate}
+
+To assess the model's effectiveness, we will use the RMSE measure. The performance of the model is improved by a decreased RMSE. Our ultimate objective is to create a model that, using the provided information, can precisely estimate the price of homes in any location.
+
+\vspace{1\baselineskip}
+Linear Regression: 
+
+Linear Regression is a Supervised Machine Learning Model for finding the relationship between independent variables and dependent variable. Linear regression performs the task to predict the response (dependent) variable value (y) based on a given (independent) explanatory variable (x). So, this regression technique finds out a linear relationship between x (input) and y (output).
+\vspace{21\baselineskip}
+
+Google Colab Notebook (ipynb) \href{https://colab.research.google.com/drive/1LRfhZegwL5-s1jCuh2wH0zb_LphDa4Qa#scrollTo=EG5ced_Z_Bc8&line=1&uniqifier=1}{\textcolor{blue}{(link)}}.
+\begin{minted}{python}
+#importing the libraries
+
+import pandas as pd
+#Pandas is a library for analysing and manipulating data.
+
+import numpy as np
+#Python's numpy package is used for scientific computing.
+
+import seaborn as sns
+#A data visualisation library based on matplotlib is called seaborn.
+
+import matplotlib.pyplot as plt
+#Python's matplotlib package is used to build visualisations.
+
+from sklearn.model_selection import train_test_split
+#The sklearn.model selection module's train test split
+#method divides the data into training and testing sets.
+
+from sklearn.linear_model import LinearRegression
+#To develop a linear regression model, a class called
+#LinearRegression from the sklearn.linear model module will
+#be utilised.
+
+from sklearn.metrics import mean_squared_error
+#The RMSE will be determined using the sklearn.metrics
+#module's mean squared error function.
+
+# Load the dataset
+housing_data = pd.read_csv('USA_Housing.csv')
+#In this step, we use the read csv function to import the dataset into the DataFrame.
+
+# Check the column data types
+print("Column data types:")
+print(housing_data.dtypes)
+
+# Visualize the dataset
+print("Visualizing the dataset...")
+sns.pairplot(housing_data)
+plt.show()
+#In this phase, the pairplot function from the Seaborn
+#library is used to show the dataset. Every pair of
+#variables in the dataset has a scatterplot created by this
+#function. The plot is shown using the plt.show() method.
+
+# Split the dataset into training and testing sets
+X = housing_data.drop(['Price', 'Address'], axis=1)
+y = housing_data['Price']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+#We divided the dataset into training and testing sets in
+#this stage. With the exception of the Price and Address
+#columns, the X variable contains all the predictor
+#variables. The desired variable, Price, is contained in
+#the y variable. The data is separated between training and
+#testing sets using the train test split function. 30% of
+#the data will be utilised for testing because the test
+#size option is set to 0.3. In order to guarantee that the
+#same split is utilised each time the code is executed, we
+#additionally set the random state option to 42.
+
+# Train the model
+print("Training the model...")
+regressor = LinearRegression()
+regressor.fit(X_train, y_train)
+
+# Print the model coefficients
+print('Model Coefficients:', regressor.coef_)
+
+# Make predictions on the test set
+print("Making predictions on the test set...")
+y_pred = regressor.predict(X_test)
+
+# Print the RMSE
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+print('Root Mean Squared Error:', rmse)
+
+# Visualize the predictions
+plt.scatter(y_test, y_pred)
+plt.xlabel('Actual Prices')
+plt.ylabel('Predicted Prices')
+plt.show()
+
+\end{minted}
+\vspace{1\baselineskip}
+\includegraphics{4.png}
+\includegraphics{1.png}
+\includegraphics{3.png}
+
+\end{document}
+
