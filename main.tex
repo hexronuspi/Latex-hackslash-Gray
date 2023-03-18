@@ -17,7 +17,7 @@
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 \graphicspath{{Images/}}
 \begin{document}
-*This document is written in \LaTeX, by Aditya Raj (2204126/ECE-B), for raw \LaTeX code click \href{}{\textcolor{blue}{here}}.
+*This document is written in \LaTeX, by Aditya Raj (2204126/ECE-B), for raw \LaTeX code click \href{https://github.com/hexronuspi/Latex-hackslash-Gray/blob/main/main.tex}{\textcolor{blue}{here}}.
 \begin{center}
 \textbf{\Large Team Gray Interface (ML Team) Induction Tasks}
 \end{center}
@@ -60,14 +60,28 @@ The following actions will be taken in order to accomplish this goal:
 \end{enumerate}
 
 To assess the model's effectiveness, we will use the RMSE measure. The performance of the model is improved by a decreased RMSE. Our ultimate objective is to create a model that, using the provided information, can precisely estimate the price of homes in any location.
-
 \vspace{1\baselineskip}
-Linear Regression: 
 
-Linear Regression is a Supervised Machine Learning Model for finding the relationship between independent variables and dependent variable. Linear regression performs the task to predict the response (dependent) variable value (y) based on a given (independent) explanatory variable (x). So, this regression technique finds out a linear relationship between x (input) and y (output).
+The program was checked with different values of testsize and 
+randomstate, \textcolor{red}{for randomstate = 45 and testsize = 0.40 the minimum of the RMSE was determied.(The minimum came out to be 	$\approx$ 0, when 'Price' was dropped during calculation')}
+\begin{table}[h]
+\centering
+\caption{Test RMSE Cases}
+\label{tab:test-rmse}
+\begin{tabular}{|c|c|c|}
+\hline
+\textcolor{red}{\textbf{testsize}} & \textcolor{red}{\textbf{random state}} & \textcolor{red}{\textbf{RMSE}} \\ \hline
+0.30 & 42 & 100325.1651816 \\ \hline
+0.30 & 45 & 99843.8350706 \\ \hline
+0.40 & 45 & 99545.2616282 \\ \hline
+0.40 & 45 & 	$\approx$ 0(Zero) :: Price was "dropped" while calculation \\ \hline
+\end{tabular}
+\end{table}
+
+
 \vspace{21\baselineskip}
 
-Google Colab Notebook (ipynb) \href{https://colab.research.google.com/drive/1LRfhZegwL5-s1jCuh2wH0zb_LphDa4Qa#scrollTo=EG5ced_Z_Bc8&line=1&uniqifier=1}{\textcolor{blue}{(link)}}.
+Google Colab Notebook (Drive) \href{https://drive.google.com/drive/folders/1SFkQtmzvhyU-O0_g99m80oqBAWkEj22J?usp=sharing}{\textcolor{blue}{(link)}}.The Google drive link can be found\href{https://drive.google.com/drive/folders/1oUOGVvu0X8MpYs0S50cgQ-SZPvm9ikcR?usp=sharing}{\textcolor{blue}{(here)}}.
 \begin{minted}{python}
 #importing the libraries
 
@@ -113,48 +127,64 @@ plt.show()
 #variables in the dataset has a scatterplot created by this
 #function. The plot is shown using the plt.show() method.
 
-# Split the dataset into training and testing sets
-X = housing_data.drop(['Price', 'Address'], axis=1)
-y = housing_data['Price']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-#We divided the dataset into training and testing sets in
-#this stage. With the exception of the Price and Address
-#columns, the X variable contains all the predictor
-#variables. The desired variable, Price, is contained in
-#the y variable. The data is separated between training and
-#testing sets using the train test split function. 30% of
-#the data will be utilised for testing because the test
-#size option is set to 0.3. In order to guarantee that the
-#same split is utilised each time the code is executed, we
-#additionally set the random state option to 42.
 
-# Train the model
+
+housing_data.info()
+
+# Check for missing values
+print(housing_data.isnull().sum())
+
+housing_data.head()
+
+# Train the model on the dataset and print error and RMSE 
+X = housing_data.drop([ 'Address'], axis=1)
+#I dropped the "Price" and "Address" columns from the dataset and
+#used the remaining columns as input features to train the linear #regression model. 
+#The reason for dropping the "Price" column is that it is the target variable that we
+#are trying to predict, and we don't want it to be included as 
+#a feature in the model. The reason for dropping the "Address" column is that it is
+#a non-numeric categorical variable that cannot be used directly
+#as a feature in a linear regression model.
+
+#since we are working on linear regression, the representaion
+#[F=A+B(x1)+C(x2)+D(x3)+........], this model will fall apart for more
+#number of variables and if the input values are not 
+#linearly placed in the dataset(which is a hypothetical senario by def.),
+#so using more and more variables will affect the output severely.
+y = housing_data['Price']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.40, random_state=45)
+
 print("Training the model...")
 regressor = LinearRegression()
 regressor.fit(X_train, y_train)
 
-# Print the model coefficients
 print('Model Coefficients:', regressor.coef_)
 
-# Make predictions on the test set
 print("Making predictions on the test set...")
 y_pred = regressor.predict(X_test)
 
-# Print the RMSE
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 print('Root Mean Squared Error:', rmse)
 
-# Visualize the predictions
 plt.scatter(y_test, y_pred)
 plt.xlabel('Actual Prices')
 plt.ylabel('Predicted Prices')
 plt.show()
-
 \end{minted}
 \vspace{1\baselineskip}
 \includegraphics{4.png}
 \includegraphics{1.png}
+
+\vspace{8\baselineskip}
+This is when 'Price', and 'Address' were dropped.
+
 \includegraphics{3.png}
+
+\vspace{16\baselineskip}
+
+This is when 'Address' was dropped.
+
+\includegraphics{2.png}
 
 \end{document}
 
